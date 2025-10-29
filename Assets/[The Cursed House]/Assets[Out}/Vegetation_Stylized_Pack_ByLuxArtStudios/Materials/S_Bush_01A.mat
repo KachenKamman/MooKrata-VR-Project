@@ -127,10 +127,10 @@ Material:
     - _WindFrequency: 2.4
     - _WindSpeed: 1
     - _WindStrength: 0.1
-    - _WorkflowMode: 0
+    - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.1369704, g: 0.509434, b: 0.29609257, a: 1}
+    - _BaseColor: {r: 0.13697034, g: 0.509434, b: 0.2960925, a: 1}
     - _BottomColor: {r: 1, g: 0, b: 0.6155224, a: 1}
     - _Color: {r: 0.13697037, g: 0.509434, b: 0.29609254, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

@@ -1,0 +1,74 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl Wood_Floor
+Ka 0.000000 0.000000 0.000000
+Kd 0.607843 0.411765 0.239216
+Ks 0.330000 0.330000 0.330000
+map_Kd ACT 3-4/Wood_Floor.jpg
+
+newmtl Roofing_Shingles_Variable
+Ka 0.000000 0.000000 0.000000
+Kd 0.576471 0.478431 0.415686
+Ks 0.330000 0.330000 0.330000
+
+newmtl FrontColor
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.330000 0.330000 0.330000
+
+newmtl Concrete_Scored_Jointless
+Ka 0.000000 0.000000 0.000000
+Kd 0.549020 0.521569 0.498039
+Ks 0.330000 0.330000 0.330000
+map_Kd ACT 3-4/Concrete_Scored_Jointless.jpg
+
+newmtl Grass_Dark_Green
+Ka 0.000000 0.000000 0.000000
+Kd 0.415686 0.615686 0.215686
+Ks 0.330000 0.330000 0.330000
+map_Kd ACT 3-4/Grass_Dark_Green.jpg
+
+newmtl _2
+Ka 0.000000 0.000000 0.000000
+Kd 0.482353 0.454902 0.349020
+Ks 0.330000 0.330000 0.330000
+map_Kd ACT 3-4/_2.png
+
+newmtl _1
+Ka 0.000000 0.000000 0.000000
+Kd 0.576471 0.607843 0.549020
+Ks 0.330000 0.330000 0.330000
+map_Kd ACT 3-4/_1.png
+
+newmtl _
+Ka 0.000000 0.000000 0.000000
+Kd 0.843137 0.717647 0.639216
+Ks 0.330000 0.330000 0.330000
+map_Kd ACT 3-4/_.png
+
+newmtl Wood_Bamboo_Medium
+Ka 0.000000 0.000000 0.000000
+Kd 0.694118 0.411765 0.168627
+Ks 0.330000 0.330000 0.330000
+map_Kd ACT 3-4/Wood_Bamboo_Medium.jpg
+
+newmtl Wood_Floor_Dark
+Ka 0.000000 0.000000 0.000000
+Kd 0.600000 0.368627 0.164706
+Ks 0.330000 0.330000 0.330000
+map_Kd ACT 3-4/Wood_Floor_Dark.jpg
+
+newmtl Wood_Veneer_01
+Ka 0.000000 0.000000 0.000000
+Kd 0.470588 0.274510 0.145098
+Ks 0.330000 0.330000 0.330000
+map_Kd ACT 3-4/Wood_Veneer_01.jpg
+
+newmtl Wood_Fence_with_Lattice
+Ka 0.000000 0.000000 0.000000
+Kd 0.666667 0.415686 0.239216
+Ks 0.330000 0.330000 0.330000
+map_Kd ACT 3-4/Wood_Fence_with_Lattice.png
+

@@ -11,8 +11,9 @@ public class Enemy_Ghost : MonoBehaviour
     [Header("Stats")]
     public float sightRange = 10f;      // ระยะมองเห็น
     public float attackRange = 2f;      // ระยะโจมตี
-    public float damageAmount = 20f;    // ความแรง (ให้ตรงกับ float ใน Health ของคุณ)
+    public float damageAmount = 999f;    // ความแรง (ให้ตรงกับ float ใน Health ของคุณ)
     public float timeBetweenAttacks = 2f;
+    public float MoveS = 0.1f;
 
     [Header("Patrol")]
     public Transform[] patrolPoints;    // จุดเดินลาดตระเวน
@@ -33,21 +34,31 @@ public class Enemy_Ghost : MonoBehaviour
     {
         if (player == null) return;
 
+        Vector3 currentPositionNoY = transform.position;
+        currentPositionNoY.y = 0;
+
+        Vector3 playerPositionNoY = player.position;
+        playerPositionNoY.y = 0;    
+
         // เช็คระยะห่าง
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(currentPositionNoY, playerPositionNoY);
         playerInSightRange = distanceToPlayer <= sightRange;
         playerInAttackRange = distanceToPlayer <= attackRange;
 
         // --- State Machine --- //
+        Debug.Log("Is player insight = " + playerInSightRange);
+        Debug.Log("Is player in attackrange = " + playerInAttackRange);
 
         // 1. ถ้าไม่เห็น และ ตีไม่ถึง -> เดินลาดตระเวน
         if (!playerInSightRange && !playerInAttackRange)
         {
+            Debug.Log("patrol");
             Patroling();
         }
         // 2. ถ้าเห็น แต่ยังตีไม่ถึง -> วิ่งไล่
         else if (playerInSightRange && !playerInAttackRange)
         {
+            Debug.Log("chasing");
             Chasing();
         }
         // 3. ถ้าเห็น และ อยู่ในระยะตี -> โจมตี
@@ -61,7 +72,7 @@ public class Enemy_Ghost : MonoBehaviour
     {
         if (patrolPoints.Length == 0) return;
 
-        agent.speed = 2.0f; // เดินช้าๆ
+        agent.speed = MoveS; // เดินช้าๆ
         
         // ถ้าเดินถึงจุดหมายแล้ว ไปจุดถัดไป
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
@@ -78,12 +89,14 @@ public class Enemy_Ghost : MonoBehaviour
 
     private void Chasing()
     {
-        agent.speed = 4.5f; // วิ่งเร็ว
+        agent.speed = MoveS; // วิ่งเร็ว
         agent.SetDestination(player.position);
     }
 
     private void Attacking()
+    
     {
+        Debug.Log("attacking");
         agent.SetDestination(transform.position); // หยุดเดิน
         transform.LookAt(player); // หันหน้าหาผู้เล่น
 
@@ -96,7 +109,7 @@ public class Enemy_Ghost : MonoBehaviour
             if (playerHealth != null && !playerHealth.IsDead())
             {
                 Debug.Log("ผีตีผู้เล่น!");
-                playerHealth.TakeDamage(damageAmount); // เรียกฟังก์ชันของคุณ
+                playerHealth.TakeDamage(9999); // เรียกฟังก์ชันของคุณ
             }
 
             // --- จบการโจมตี ---

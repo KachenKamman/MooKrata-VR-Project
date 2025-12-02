@@ -1,27 +1,26 @@
 using UnityEngine;
-using UnityEngine.AI; // จำเป็นสำหรับการเดิน
+using UnityEngine.AI;
+using UnityEngine.SceneManagement; // [NEW] 1. ต้องเพิ่มบรรทัดนี้เพื่อใช้คำสั่งรีสตาร์ทฉาก
 
-[RequireComponent(typeof(NavMeshAgent))] // บังคับว่าต้องมี NavMeshAgent
+[RequireComponent(typeof(NavMeshAgent))]
 public class Enemy_Ghost : MonoBehaviour
 {
     [Header("Target & Settings")]
-    public Transform player;            // ลากตัวผู้เล่นมาใส่ตรงนี้
-    public LayerMask playerLayer;       // Layer ของผู้เล่น (เพื่อให้ Raycast ไม่ติดกำแพง)
+    public Transform player;
+    public LayerMask playerLayer;
     
     [Header("Stats")]
-    public float sightRange = 10f;      // ระยะมองเห็น
-    public float attackRange = 2f;      // ระยะโจมตี
-    public float damageAmount = 999f;    // ความแรง (ให้ตรงกับ float ใน Health ของคุณ)
+    public float sightRange = 10f;
+    public float attackRange = 2f;
+    public float damageAmount = 999f;
     public float timeBetweenAttacks = 2f;
     public float MoveS = 0.1f;
 
     [Header("Patrol")]
-    public Transform[] patrolPoints;    // จุดเดินลาดตระเวน
+    public Transform[] patrolPoints;
 
-    // สถานะภายใน
     private NavMeshAgent agent;
     private bool alreadyAttacked;
-    private int currentPatrolIndex;
     private bool playerInSightRange;
     private bool playerInAttackRange;
 
@@ -40,79 +39,67 @@ public class Enemy_Ghost : MonoBehaviour
         Vector3 playerPositionNoY = player.position;
         playerPositionNoY.y = 0;    
 
-        // เช็คระยะห่าง
         float distanceToPlayer = Vector3.Distance(currentPositionNoY, playerPositionNoY);
         playerInSightRange = distanceToPlayer <= sightRange;
         playerInAttackRange = distanceToPlayer <= attackRange;
 
-        // --- State Machine --- //
-        Debug.Log("Is player insight = " + playerInSightRange);
-        Debug.Log("Is player in attackrange = " + playerInAttackRange);
-
-        // 1. ถ้าไม่เห็น และ ตีไม่ถึง -> เดินลาดตระเวน
         if (!playerInSightRange && !playerInAttackRange)
         {
-            Debug.Log("patrol");
             Patroling();
         }
-        // 2. ถ้าเห็น แต่ยังตีไม่ถึง -> วิ่งไล่
         else if (playerInSightRange && !playerInAttackRange)
         {
-            Debug.Log("chasing");
             Chasing();
         }
-        // 3. ถ้าเห็น และ อยู่ในระยะตี -> โจมตี
         else if (playerInSightRange && playerInAttackRange)
         {
             Attacking();
         }
     }
 
+    private int currentPatrolIndex; // ย้ายมาประกาศตรงนี้เพื่อให้เก็บค่าได้ถูกต้อง
     private void Patroling()
     {
         if (patrolPoints.Length == 0) return;
 
-        agent.speed = MoveS; // เดินช้าๆ
+        agent.speed = MoveS;
         
-        // ถ้าเดินถึงจุดหมายแล้ว ไปจุดถัดไป
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
             agent.SetDestination(patrolPoints[currentPatrolIndex].position);
         }
-        // ป้องกันยืนเอ๋อ กรณีไม่มีเป้าหมาย
-        if (agent.destination == null || agent.remainingDistance < 0.5f)
+        if (agent.destination == null || agent.remainingDistance < 0.5f) // กันบั๊ก
         {
-            agent.SetDestination(patrolPoints[currentPatrolIndex].position);
+             agent.SetDestination(patrolPoints[currentPatrolIndex].position);
         }
     }
 
     private void Chasing()
     {
-        agent.speed = MoveS; // วิ่งเร็ว
+        agent.speed = MoveS;
         agent.SetDestination(player.position);
     }
 
     private void Attacking()
-    
     {
         Debug.Log("attacking");
-        agent.SetDestination(transform.position); // หยุดเดิน
-        transform.LookAt(player); // หันหน้าหาผู้เล่น
+        agent.SetDestination(transform.position);
+        transform.LookAt(player);
 
         if (!alreadyAttacked)
         {
-            // --- เชื่อมต่อกับ Script Health ของคุณ ---
             Health playerHealth = player.GetComponent<Health>();
             
-            // เช็คว่าเจอ Script Health ไหม และผู้เล่นตายหรือยัง
             if (playerHealth != null && !playerHealth.IsDead())
             {
-                Debug.Log("ผีตีผู้เล่น!");
-                playerHealth.TakeDamage(9999); // เรียกฟังก์ชันของคุณ
-            }
+                Debug.Log("ผีตีผู้เล่นตาย!");
+                playerHealth.TakeDamage(9999); 
 
-            // --- จบการโจมตี ---
+                // [NEW] 2. สั่งรีสตาร์ท Scene ปัจจุบันทันที
+                // โค้ดนี้จะดึงชื่อ Scene ปัจจุบันมาแล้วสั่ง Load ใหม่
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
 
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
@@ -124,7 +111,6 @@ public class Enemy_Ghost : MonoBehaviour
         alreadyAttacked = false;
     }
 
-    // วาดวงกลมใน Scene เพื่อให้เห็นระยะ (Debug)
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

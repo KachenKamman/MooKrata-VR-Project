@@ -45,14 +45,17 @@ public class Enemy_Ghost : MonoBehaviour
 
         if (!playerInSightRange && !playerInAttackRange)
         {
+            Debug.Log("เดิน");
             Patroling();
         }
         else if (playerInSightRange && !playerInAttackRange)
         {
+            Debug.Log("ทำอะไรสักอย่าง");
             Chasing();
         }
         else if (playerInSightRange && playerInAttackRange)
         {
+            Debug.Log("ตี");
             Attacking();
         }
     }

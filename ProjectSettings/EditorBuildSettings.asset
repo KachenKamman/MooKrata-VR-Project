@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/[The Cursed House]/[Scene]/The Cused House Scene.unity
     guid: e49970be04ea06f46afa1764b3c69941
   - enabled: 1
+    path: Assets/[The Cursed House]/[Scene]/END.unity
+    guid: 932139f63d91c504083f6268f0280c44
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
